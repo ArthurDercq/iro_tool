@@ -1,2 +1,1 @@
 streamlit
-sqlite3 3.39.5
