@@ -1,3 +1,2 @@
 streamlit
-sqlite 3.35.4
-```
+sqlite3
