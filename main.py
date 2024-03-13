@@ -1,9 +1,25 @@
-import sqlite3
 import streamlit as st
 from requests import *
 
 
 st.set_page_config(layout="wide")
+logo_path = "img/logo_cap.png"
+
+# CSS pour positionner le logo en haut à droite
+st.markdown(
+    """
+    <style>
+    .sidebar .sidebar-content {
+        margin-top: 0px;
+    }
+    .sidebar .sidebar-content .sidebar-collapse-control {
+        margin-top: 0px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+st.sidebar.image(logo_path, width=100, use_column_width=False)
 st.title('Cap Conseil - Exemples des IRO rencontrés lors de nos missions')
 st.write('Bienvenue sur notre application de démonstration. Vous pouvez sélectionner un topic dans la barre latérale pour afficher les impacts, risques et opportunités associés.')
 
@@ -34,47 +50,96 @@ st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 
+with st.container():
 
-c1,c2, c3 = st.columns([1, 1, 1])
+    def afficher_impacts(impacts):
+        st.markdown(
+            """
+            <p><strong>Impact(s) lié(s) à cet enjeu:</strong></p> """
+            , unsafe_allow_html=True
 
-with c1:
-    st.markdown(
-        """
-        <div style='border: 1px solid #fcac64; border-radius: 5px; padding: 10px;'>
-        <p>Impact lié:</p>
-        <p>{}</p>
-        </div>
-        """.format(get_impact(topic_ID)[0]),
-        unsafe_allow_html=True
-    )
+        )
+        for impact, source in impacts:
+            st.markdown(
+                """
+                <div style='border: 1px solid #fcac64; border-radius: 5px; padding: 10px;'>
+                <br>
+                <p>{}</p>
+                <p style='font-size: 0.8em; color: gray;'>Source: {}</p>
+                </div>
+                <br>
+                """.format(impact, source),
+                unsafe_allow_html=True
+            )
+
+# Utilisation de la fonction pour afficher les impacts sur Streamlit
+    impacts = get_impact(topic_ID)
+    afficher_impacts(impacts)
+
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
 
-with c2:
+with st.container():
 
-    if get_risk(topic_ID)[0]:
-        result = get_risk(topic_ID)[0]
+    def afficher_risques(risques):
+        st.markdown(
+            """
+            <p><strong>Risque(s) lié(s) à cet enjeu:</strong></p> """
+            , unsafe_allow_html=True
 
-    else:
-        print("No risks found")
+        )
+        for impact, source in risques:
+            st.markdown(
+                """
+                <div style='border: 1px solid #91f3fa; border-radius: 5px; padding: 10px;'>
+                <br>
+                <p>{}</p>
+                <p style='font-size: 0.8em; color: gray;'>Source: {}</p>
+                </div>
+                <br>
+                """.format(impact, source),
+                unsafe_allow_html=True
+            )
 
-    st.markdown(
-        """
-        <div style='border: 1px solid #91f3fa; border-radius: 5px; padding: 10px;'>
-        <p>Risque lié:</p>
-        <p>{}</p>
-        </div>
-        """.format(result),
-        unsafe_allow_html=True
-    )
+# Utilisation de la fonction pour afficher les impacts sur Streamlit
+    risques = get_risk(topic_ID)
+    afficher_risques(risques)
 
-with c3:
 
-    st.markdown(
-        """
-        <div style='border: 1px solid #607c7b; border-radius: 5px; padding: 10px;'>
-        <p>Opportunité liée:</p>
-        <p>{}</p>
-        </div>
-        """.format(get_opportunity(topic_ID)[0]),
-        unsafe_allow_html=True
-    )
+with st.container():
+
+    def afficher_opp(opps):
+        st.markdown(
+            """
+            <p><strong>Opportunités(s) liée(s) à cet enjeu:</strong></p> """
+            , unsafe_allow_html=True
+
+        )
+        for opp, source in opps:
+            st.markdown(
+                """
+                <div style='border: 1px solid #607c7b; border-radius: 5px; padding: 10px;'>
+                <br>
+                <p>{}</p>
+                <p style='font-size: 0.8em; color: gray;'>Source: {}</p>
+                </div>
+                <br>
+                """.format(opp, source),
+                unsafe_allow_html=True
+            )
+
+# Utilisation de la fonction pour afficher les impacts sur Streamlit
+    opps = get_opportunity(topic_ID)
+    afficher_opp(opps)
+
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
+
+with st.container():
+    c1, c2, c3 = st.columns([1, 1, 1])
+
+    with c2:
+        img_1_path = "img/illus_1.png"
+        st.image(img_1_path, width=150, use_column_width=False)

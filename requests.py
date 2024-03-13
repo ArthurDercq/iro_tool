@@ -1,4 +1,5 @@
 import sqlite3
+import pandas as pd
 
 # Connexion à la base de données (créée si elle n'existe pas)
 
@@ -34,15 +35,29 @@ def get_sector():
     sectors = [sector[0] for sector in sectors]
     return sectors
 
+# def get_impact(topic_selector):
+#     conn, cursor = connect_to_db()
+#     query_Impact_from_topics="""SELECT impacts.impact_name, companies.company_sector
+#                 FROM impacts
+#                 JOIN companies ON impacts.company_id = companies.company_id
+#                 WHERE impacts.topic_id = ?"""
+#     cursor.execute(query_Impact_from_topics, (topic_selector,))
+#     impacts = cursor.fetchall()
+#     impacts = [impact[0] for impact in impacts]
+#     if len(impacts) == 0:
+#         print("No impacts found")
+#     else:
+#         return impacts
+
 def get_impact(topic_selector):
     conn, cursor = connect_to_db()
-    query_Impact_from_topics="""SELECT impacts.impact_name, companies.company_sector
-                FROM impacts
-                JOIN companies ON impacts.company_id = companies.company_id
-                WHERE impacts.topic_id = ?"""
+    query_Impact_from_topics="""SELECT impacts.impact_name, companies.company_name
+            FROM impacts
+            JOIN companies ON impacts.company_id = companies.company_id
+            WHERE impacts.topic_id = ?
+            """
     cursor.execute(query_Impact_from_topics, (topic_selector,))
     impacts = cursor.fetchall()
-    impacts = [impact[0] for impact in impacts]
     if len(impacts) == 0:
         print("No impacts found")
     else:
@@ -51,14 +66,13 @@ def get_impact(topic_selector):
 
 def get_risk(topic_selector):
     conn, cursor = connect_to_db()
-    query_risk_name= """SELECT risks.risk_name, companies.company_sector
+    query_risk_name= """SELECT risks.risk_name, companies.company_name
                     FROM risks
                     JOIN companies ON risks.company_id = companies.company_id
                     WHERE risks.topic_id = ?
                     """
     cursor.execute(query_risk_name, (topic_selector,))
     risks = cursor.fetchall()
-    risks = [risk[0] for risk in risks]
     if len(risks) == 0:
         print("No risks found")
     else:
@@ -67,14 +81,13 @@ def get_risk(topic_selector):
 
 def get_opportunity(topic_selector):
     conn, cursor = connect_to_db()
-    query_opportunity_name= """SELECT opportunities.opportunity_name, companies.company_sector
+    query_opportunity_name= """SELECT opportunities.opportunity_name, companies.company_name
                             FROM opportunities
                             JOIN companies ON Opportunities.company_id = companies.company_id
                             WHERE opportunities.topic_id = ?
                             """;
     cursor.execute(query_opportunity_name,  (topic_selector,))
     opportunities = cursor.fetchall()
-    opportunities = [opportunity[0] for opportunity in opportunities]
     if len(opportunities) == 0:
         print("No opportunities found")
     else:
