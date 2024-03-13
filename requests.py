@@ -1,11 +1,16 @@
 import sqlite3
 
 # Connexion à la base de données (créée si elle n'existe pas)
-conn = sqlite3.connect('data/iro.db')
-cursor = conn.cursor()
+
+def connect_to_db():
+    conn = sqlite3.connect('data/iro_v1')
+    cursor = conn.cursor()
+
+    return conn, cursor
 
 def get_topic_name():
-    query_topic_name= """SELECT Topic_name FROM Topic;"""
+    conn, cursor = connect_to_db()
+    query_topic_name= """SELECT topic_name FROM topics;"""
     cursor.execute(query_topic_name)
     topics = cursor.fetchall()
     topics = [topic[0] for topic in topics]
@@ -13,7 +18,8 @@ def get_topic_name():
 
 
 def get_topicID(topic_name):
-    query_topic_name= """SELECT Topic_id FROM Topic WHERE Topic_name = ?"""
+    conn, cursor = connect_to_db()
+    query_topic_name= """SELECT topic_id FROM topics WHERE topic_name = ?"""
     cursor.execute(query_topic_name, (topic_name,))
     id = cursor.fetchall()
     id = [topic[0] for topic in id]
@@ -21,17 +27,19 @@ def get_topicID(topic_name):
 
 
 def get_sector():
-    query_sector_name= """SELECT Company_sector FROM Companies;"""
+    conn, cursor = connect_to_db()
+    query_sector_name= """SELECT company_sector FROM companies;"""
     cursor.execute(query_sector_name)
     sectors = cursor.fetchall()
     sectors = [sector[0] for sector in sectors]
     return sectors
 
 def get_impact(topic_selector):
-    query_Impact_from_topics="""SELECT Impacts.Impact_name, Companies.Company_sector
-                FROM Impacts
-                JOIN Companies ON Impacts.Company_ID = Companies.Company_id
-                WHERE Impacts.Topic_id = ?"""
+    conn, cursor = connect_to_db()
+    query_Impact_from_topics="""SELECT impacts.impact_name, companies.company_sector
+                FROM impacts
+                JOIN companies ON impacts.company_id = companies.company_id
+                WHERE impacts.topic_id = ?"""
     cursor.execute(query_Impact_from_topics, (topic_selector,))
     impacts = cursor.fetchall()
     impacts = [impact[0] for impact in impacts]
@@ -42,10 +50,11 @@ def get_impact(topic_selector):
 
 
 def get_risk(topic_selector):
-    query_risk_name= """SELECT Risks.Risk_name, Companies.Company_sector
-                    FROM Risks
-                    JOIN Companies ON Risks.Company_ID = Companies.Company_id
-                    WHERE Risks.Topic_id = ?
+    conn, cursor = connect_to_db()
+    query_risk_name= """SELECT risks.risk_name, companies.company_sector
+                    FROM risks
+                    JOIN companies ON risks.company_id = companies.company_id
+                    WHERE risks.topic_id = ?
                     """
     cursor.execute(query_risk_name, (topic_selector,))
     risks = cursor.fetchall()
@@ -57,10 +66,11 @@ def get_risk(topic_selector):
 
 
 def get_opportunity(topic_selector):
-    query_opportunity_name= """SELECT Opportunities.Opportunity_name, Companies.Company_sector
-                            FROM Opportunities
-                            JOIN Companies ON Opportunities.Company_ID = Companies.Company_id
-                            WHERE Opportunities.Topic_id = ?
+    conn, cursor = connect_to_db()
+    query_opportunity_name= """SELECT opportunities.opportunity_name, companies.company_sector
+                            FROM opportunities
+                            JOIN companies ON Opportunities.company_id = companies.company_id
+                            WHERE opportunities.topic_id = ?
                             """;
     cursor.execute(query_opportunity_name,  (topic_selector,))
     opportunities = cursor.fetchall()

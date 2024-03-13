@@ -8,8 +8,8 @@ st.title('Cap Conseil - Exemples des IRO rencontrés lors de nos missions')
 st.write('Bienvenue sur notre application de démonstration. Vous pouvez sélectionner un topic dans la barre latérale pour afficher les impacts, risques et opportunités associés.')
 
 # Connexion à la base de données (créée si elle n'existe pas)
-conn = sqlite3.connect('data/iro.db')
-cursor = conn.cursor()
+# conn = sqlite3.connect('data/iro.db')
+# cursor = conn.cursor()
 
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("<hr>", unsafe_allow_html=True)
